@@ -2,9 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { State } from '../../../reducers';
-import { MarkAsOldAction, LoadAction } from '../../actions/profile';
 
+import { State } from '../../reducers';
+import { MarkAsOldAction, LoadAction } from '../../actions/profile';
 import { Profile } from '../../models/profile';
 
 @Component({
@@ -19,7 +19,7 @@ export class ListContainerComponent implements OnInit {
   constructor(private store: Store<State>) { }
 
   ngOnInit() {
-    this.profiles$ = this.store.pipe(select(s => s.profile.profiles));
+    this.profiles$ = this.store.pipe(select(s => s.profile.profile.profiles));
     this.store.dispatch(new LoadAction());
     this.newCount$ = this.profiles$.pipe(
       map(x => x.filter(profile => profile.new).length)
