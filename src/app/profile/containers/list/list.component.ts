@@ -12,11 +12,15 @@ import { ProfileService } from '../../profile.service';
 })
 export class ListContainerComponent implements OnInit {
   profiles$: Observable<Profile[]>;
+  newCount$: Observable<number>;
 
   constructor(private profileService: ProfileService) { }
 
   ngOnInit() {
     this.profiles$ = this.profileService.profiles$;
+    this.newCount$ = this.profileService.profiles$.pipe(
+      map(x => x.filter(profile => profile.new).length)
+    );
   }
 
   markAsOld(profile: Profile) {
