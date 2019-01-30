@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { State } from '../../../reducers';
+import { MarkAsOldAction, LoadAction } from '../../actions/profile';
 
 import { Profile } from '../../models/profile';
-import { ProfileService } from '../../profile.service';
 
 @Component({
   templateUrl: './list.component.html',
@@ -14,17 +16,18 @@ export class ListContainerComponent implements OnInit {
   profiles$: Observable<Profile[]>;
   newCount$: Observable<number>;
 
-  constructor(private profileService: ProfileService) { }
+  constructor(private store: Store<State>) { }
 
   ngOnInit() {
-    this.profiles$ = this.profileService.profiles$;
-    this.newCount$ = this.profileService.profiles$.pipe(
+    this.profiles$ = this.store.pipe(select(s => s.profile.profiles));
+    this.store.dispatch(new LoadAction());
+    this.newCount$ = this.profiles$.pipe(
       map(x => x.filter(profile => profile.new).length)
     );
   }
 
   markAsOld(profile: Profile) {
-    this.profileService.markAsOld(profile.name);
+    this.store.dispatch(new MarkAsOldAction(profile.name));
   }
 
 }
