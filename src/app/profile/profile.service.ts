@@ -29,6 +29,15 @@ export class ProfileService {
     this.subject.next(this.data);
   }
 
+  markAsOld(name: string) {
+    this.data.forEach(x => {
+      if (x.name === name) {
+        x.new = false;
+      }
+    });
+    this.subject.next(this.data);
+  }
+
   logData() {
     console.log(this.data);
   }
