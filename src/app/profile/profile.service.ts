@@ -1,44 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Profile } from './models/profile';
+import { Store, select } from '@ngrx/store';
 import { BehaviorSubject } from 'rxjs';
+
+import { Profile } from './models/profile';
+import { State } from '../reducers';
+import { AddAction, MarkAsOldAction, LoadAction } from './actions/profile';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  private data: Profile[];
-  private subject: BehaviorSubject<Profile[]>;
-
-  constructor() {
-    this.data = Array.from({ length: 5 }, (_, i): Profile =>
-      ({
-        name: `Test${i}`,
-        new: i % 2 === 0,
-      })
-    );
-    this.subject = new BehaviorSubject(this.data);
+  constructor(private store: Store<State>) {
+    this.store.dispatch(new LoadAction());
   }
 
   get profiles$() {
-    return this.subject.asObservable();
+    return this.store.pipe(select(s => s.profile.profiles));
   }
 
   add(profile: Profile) {
-    this.data.push(profile);
-    this.subject.next(this.data);
+    this.store.dispatch(new AddAction(profile));
   }
 
   markAsOld(name: string) {
-    this.data.forEach(x => {
-      if (x.name === name) {
-        x.new = false;
-      }
-    });
-    this.subject.next(this.data);
-  }
-
-  logData() {
-    console.log(this.data);
+    this.store.dispatch(new MarkAsOldAction(name));
   }
 }

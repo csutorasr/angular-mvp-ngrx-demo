@@ -7,12 +7,14 @@ import {
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 
-export interface State {
+import { State as ProfileState, reducer as ProfileReducer} from '../profile/reducers/profile';
 
+export interface State {
+  profile: ProfileState,
 }
 
 export const reducers: ActionReducerMap<State> = {
-
+  profile: ProfileReducer,
 };
 
 

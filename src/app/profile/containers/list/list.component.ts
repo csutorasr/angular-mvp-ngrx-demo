@@ -25,7 +25,6 @@ export class ListContainerComponent implements OnInit {
 
   markAsOld(profile: Profile) {
     this.profileService.markAsOld(profile.name);
-    this.profileService.logData();
   }
 
 }
