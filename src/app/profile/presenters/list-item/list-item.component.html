@@ -1,0 +1,6 @@
+<mat-list-item>
+  <a matLine>{{ profile.name }}</a>
+  <button mat-icon-button *ngIf="profile.new" (click)="markAsOld.emit(profile)">
+    <mat-icon>info</mat-icon>
+  </button>
+</mat-list-item>
