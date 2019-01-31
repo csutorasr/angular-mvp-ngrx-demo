@@ -1,0 +1,11 @@
+<ng-container *ngIf="pending; else notPending">
+  Loading...
+</ng-container>
+<ng-template #notPending>
+  <ng-container *ngIf="error; else loaded">
+    {{error}} <button mat-button (click)="reload.emit()">Reload</button>
+  </ng-container>
+</ng-template>
+<ng-template #loaded>
+  <ng-content></ng-content>
+</ng-template>

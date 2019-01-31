@@ -15,12 +15,16 @@ import { Profile } from '../../models/profile';
 export class ListContainerComponent implements OnInit {
   profiles$: Observable<Profile[]>;
   newCount$: Observable<number>;
+  pending$: Observable<boolean>;
+  error$: Observable<string>;
 
   constructor(private store: Store<State>) { }
 
   ngOnInit() {
     this.profiles$ = this.store.pipe(select(s => s.profile.profile.profiles));
-    this.store.dispatch(new LoadAction());
+    this.pending$ = this.store.pipe(select(s => s.profile.profile.pending));
+    this.error$ = this.store.pipe(select(s => s.profile.profile.error));
+    this.load();
     this.newCount$ = this.profiles$.pipe(
       map(x => x.filter(profile => profile.new).length)
     );
@@ -28,6 +32,10 @@ export class ListContainerComponent implements OnInit {
 
   markAsOld(profile: Profile) {
     this.store.dispatch(new MarkAsOldAction(profile.name));
+  }
+
+  load() {
+    this.store.dispatch(new LoadAction());
   }
 
 }

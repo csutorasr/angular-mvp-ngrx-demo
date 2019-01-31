@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
+import { SharedModule } from '../shared/shared.module';
+
 import { ProfileRoutingModule } from './profile-routing.module';
 import { reducers } from './reducers';
 import { ListContainerComponent } from './containers/list/list.component';
@@ -27,6 +29,7 @@ import { ProfileEffects } from './profile.effects';
     ProfileRoutingModule,
     StoreModule.forFeature('profile', reducers),
     EffectsModule.forFeature([ProfileEffects]),
+    SharedModule,
   ]
 })
 export class ProfileModule { }

@@ -1,3 +1,5 @@
-<app-profile-list [count]="newCount$ | async">
-  <app-profile-list-item *ngFor="let profile of profiles$ | async" [profile]="profile" (markAsOld)="markAsOld($event)"></app-profile-list-item>
-</app-profile-list>
+<app-pending [pending]="pending$ | async" [error]="error$ | async" (reload)="load()">
+  <app-profile-list [count]="newCount$ | async">
+    <app-profile-list-item *ngFor="let profile of profiles$ | async" [profile]="profile" (markAsOld)="markAsOld($event)"></app-profile-list-item>
+  </app-profile-list>
+</app-pending>
