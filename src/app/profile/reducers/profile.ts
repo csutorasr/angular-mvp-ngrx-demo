@@ -3,42 +3,58 @@ import { ActionTypes, Actions } from '../actions/profile';
 
 export interface State {
   profiles: Profile[];
+  pending: boolean;
+  error: string;
 }
 
 const initialState: State = {
   profiles: [],
+  pending: false,
+  error: null,
 }
-
-const generatedProfiles = Array.from({ length: 5 }, (_, i): Profile =>
-  ({
-    name: `Test${i}`,
-    new: i % 2 === 0,
-  })
-);
 
 export function reducer(state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionTypes.Load: {
       return {
-        profiles: [...generatedProfiles],
+        ...state,
+        pending: true,
+        error: null,
+        profiles: [],
       };
     }
-    case ActionTypes.Add: {
+    case ActionTypes.LoadSuccess: {
       return {
-        profiles: [...state.profiles, action.payload],
+        ...state,
+        pending: false,
+        profiles: action.payload,
+      };
+    }
+    case ActionTypes.LoadFailure: {
+      return {
+        ...state,
+        pending: false,
+        error: action.payload,
       };
     }
     case ActionTypes.MarkAsOld: {
       return {
-        profiles: state.profiles.map(x => {
-          if (x.name === action.payload) {
-            return {
-              ...x,
-              new: false,
-            };
-          }
-          return x;
-        }),
+        ...state,
+        error: null,
+        pending: true,
+      };
+    }
+    case ActionTypes.MarkAsOldSuccess: {
+      return {
+        ...state,
+        pending: false,
+      };
+    }
+    case ActionTypes.MarkAsOldFailure: {
+      return {
+        ...state,
+        pending: false,
+        error: action.payload,
       };
     }
     default:

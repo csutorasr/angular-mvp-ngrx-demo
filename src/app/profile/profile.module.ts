@@ -4,12 +4,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { reducers } from './reducers';
 import { ListContainerComponent } from './containers/list/list.component';
 import { ListComponent } from './presenters/list/list.component';
 import { ListItemComponent } from './presenters/list-item/list-item.component';
+import { ProfileEffects } from './profile.effects';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import { ListItemComponent } from './presenters/list-item/list-item.component';
     MatButtonModule,
     ProfileRoutingModule,
     StoreModule.forFeature('profile', reducers),
+    EffectsModule.forFeature([ProfileEffects]),
   ]
 })
 export class ProfileModule { }
